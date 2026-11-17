@@ -5,9 +5,6 @@ import datetime
 
 carpeta = "GESTOR_SO"
 
-if not os.path.exists(carpeta):
-    os.mkdir(carpeta)
-
 
 def crear_dir():
     nom = input("nombre de la carpeta: ")
@@ -117,40 +114,44 @@ def info():
         print("no existe ese archivo")
 
 
-op = ""
-while op != "10":
-    print("")
-    print("1. crear un directorio")
-    print("2. crear un archivo de texto")
-    print("3. escribir en un archivo")
-    print("4. leer un archivo")
-    print("5. renombrar un archivo")
-    print("6. copiar un archivo")
-    print("7. eliminar un archivo")
-    print("8. listar archivos")
-    print("9. info de un archivo")
-    print("10. salir")
-    op = input("elige una opcion: ")
+if __name__ == "__main__":
+    if not os.path.exists(carpeta):
+        os.mkdir(carpeta)
 
-    if op == "1":
-        crear_dir()
-    elif op == "2":
-        crear_arch()
-    elif op == "3":
-        escribir()
-    elif op == "4":
-        leer()
-    elif op == "5":
-        renombrar()
-    elif op == "6":
-        copiar()
-    elif op == "7":
-        eliminar()
-    elif op == "8":
-        listar()
-    elif op == "9":
-        info()
-    elif op == "10":
-        print("chao")
-    else:
-        print("opcion no valida")
+    op = ""
+    while op != "10":
+        print("")
+        print("1. crear un directorio")
+        print("2. crear un archivo de texto")
+        print("3. escribir en un archivo")
+        print("4. leer un archivo")
+        print("5. renombrar un archivo")
+        print("6. copiar un archivo")
+        print("7. eliminar un archivo")
+        print("8. listar archivos")
+        print("9. info de un archivo")
+        print("10. salir")
+        op = input("elige una opcion: ")
+
+        if op == "1":
+            crear_dir()
+        elif op == "2":
+            crear_arch()
+        elif op == "3":
+            escribir()
+        elif op == "4":
+            leer()
+        elif op == "5":
+            renombrar()
+        elif op == "6":
+            copiar()
+        elif op == "7":
+            eliminar()
+        elif op == "8":
+            listar()
+        elif op == "9":
+            info()
+        elif op == "10":
+            print("chao")
+        else:
+            print("opcion no valida")
