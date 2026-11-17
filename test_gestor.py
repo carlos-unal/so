@@ -294,6 +294,69 @@ class pruebas(unittest.TestCase):
         self.assertFalse((self.base / "copia.txt").exists())
         self.assertEqual((self.base / "tareas" / "nueva.txt").read_text(encoding="utf-8"), "hola mundo\n")
 
+    def test_crear_y_escribir_sin_extension(self):
+        salida = self.hacer(main.main, ["2", "hila", "3", "hila", "hola", "0"])
+        self.assertEqual((self.base / "hila.txt").read_text(encoding="utf-8"), "hola\n")
+        self.assertIn("archivo creado: hila.txt", salida)
+        self.assertNotIn("no existe ese archivo", salida)
+
+    def test_leer_sin_extension(self):
+        (self.base / "nota.txt").write_text("hola", encoding="utf-8")
+        salida = self.hacer(main.leer, ["nota"])
+        self.assertIn("hola", salida)
+
+    def test_renombrar_sin_extension(self):
+        ruta = self.base / "nota.txt"
+        ruta.write_text("hola", encoding="utf-8")
+        salida = self.hacer(main.renombrar, ["nota", "nueva.txt"])
+        self.assertIn("renombrado", salida)
+        self.assertFalse(ruta.exists())
+        self.assertEqual((self.base / "nueva.txt").read_text(encoding="utf-8"), "hola")
+
+    def test_copiar_sin_extension(self):
+        ruta = self.base / "nota.txt"
+        ruta.write_text("hola", encoding="utf-8")
+        salida = self.hacer(main.copiar, ["nota", "copia.txt"])
+        self.assertIn("copiado", salida)
+        self.assertTrue(ruta.exists())
+        self.assertEqual((self.base / "copia.txt").read_text(encoding="utf-8"), "hola")
+
+    def test_eliminar_sin_extension(self):
+        ruta = self.base / "nota.txt"
+        ruta.write_text("hola", encoding="utf-8")
+        salida = self.hacer(main.eliminar, ["nota", "n"])
+        self.assertIn("cancelado", salida)
+        self.assertTrue(ruta.exists())
+        salida = self.hacer(main.eliminar, ["nota", "s"])
+        self.assertIn("eliminado", salida)
+        self.assertFalse(ruta.exists())
+
+    def test_info_sin_extension(self):
+        (self.base / "nota.txt").write_text("hola", encoding="utf-8")
+        salida = self.hacer(main.info, ["nota"])
+        self.assertIn("nombre: nota.txt", salida)
+        self.assertIn("tamano: 4 bytes", salida)
+
+    def test_respetar_nombre_exacto(self):
+        ruta1 = self.base / "nota"
+        ruta2 = self.base / "nota.txt"
+        ruta1.write_text("sin extension\n", encoding="utf-8")
+        ruta2.write_text("no tocar", encoding="utf-8")
+        self.hacer(main.escribir, ["nota", "otra linea"])
+        self.assertEqual(ruta1.read_text(encoding="utf-8"), "sin extension\notra linea\n")
+        self.assertEqual(ruta2.read_text(encoding="utf-8"), "no tocar")
+
+    def test_bloquear_enlace_al_buscar_extension(self):
+        enlace = self.base / "enlace.txt"
+        try:
+            enlace.symlink_to(self.fuera)
+        except (OSError, NotImplementedError):
+            self.skipTest("no se pueden crear enlaces en este equipo")
+        for funcion in [main.escribir, main.leer, main.renombrar, main.copiar, main.eliminar, main.info]:
+            salida = self.hacer(funcion, ["enlace"])
+            self.assertIn("no se permiten enlaces", salida)
+        self.assertEqual(self.fuera.read_text(encoding="utf-8"), "no tocar")
+
 
 if __name__ == "__main__":
     unittest.main()
