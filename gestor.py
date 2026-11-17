@@ -201,17 +201,17 @@ def info():
 
 
 def menu():
-    print("\n===== GESTOR DE ARCHIVOS =====")
-    print("1. crear un directorio")
-    print("2. crear un archivo de texto")
-    print("3. escribir en un archivo")
-    print("4. leer un archivo")
-    print("5. renombrar un archivo")
-    print("6. copiar un archivo")
-    print("7. eliminar un archivo")
-    print("8. listar archivos y carpetas")
-    print("9. info de un archivo")
-    print("0. salir")
+    print("\nGESTOR DE ARCHIVOS")
+    print("1.crear un directorio")
+    print("2.crear un archivo de texto")
+    print("3.escribir en un archivo")
+    print("4.leer un archivo")
+    print("5.renombrar un archivo")
+    print("6.copiar un archivo")
+    print("7.eliminar un archivo")
+    print("8.listar archivos y carpetas")
+    print("9.info de un archivo")
+    print("0.salir")
 
 
 def main():
@@ -248,7 +248,7 @@ def main():
             elif op == "0":
                 print("chao")
             else:
-                print("opcion no valida")
+                print("oTchaupcion no valida")
         except UnicodeError:
             print("no se pudo leer o guardar el texto, usa archivos utf-8")
         except OSError as error:
